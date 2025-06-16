@@ -1,7 +1,34 @@
 
 import tkinter as tk
 
-# import pedidos as pd
+import pedidos as pd
+
+#------------------------Funciones de la lógica del programa------------------------
+from tkinter import messagebox
+def registrar_votante():
+    nombre = entrada_votante.get().strip().lower()
+    if  nombre == "":
+        messagebox.showwarning("Error", "Debe ingresar un nombre.")
+        return
+    if pd.agregar_votantes(nombre):
+        messagebox.showinfo("Exito", f"{nombre}Usted ya ha votado.")
+    else:
+        pd.votantes.add(nombre)
+        messagebox.showinfo("Ya registrado", f"{nombre} Usted ya voto.")
+    entrada_votante.delete(0, tk.END)
+
+def ver_votantes():
+    votantes = pd
+    if votantes:
+        lista: "\n".join(pd.votantes)
+        messagebox.showinfo("Votantes", lista.)
+    else:
+        
+        messagebox.showinfo("Sin votantes", "No hay votantes registrados.")
+
+
+#------------------------Interfaz Gráfica con Tkinter------------------------
+
 
 ventana = tk.Tk()
 ventana.title("Calculadora de comidas compartidas")
@@ -69,6 +96,9 @@ frame4.pack()
 
 button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
+
+
+
 
 
 
