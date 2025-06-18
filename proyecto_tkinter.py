@@ -10,21 +10,45 @@ def registrar_votante():
     if  nombre == "":
         messagebox.showwarning("Error", "Debe ingresar un nombre.")
         return
-    if pd.agregar_votantes(nombre):
-        messagebox.showinfo("Exito", f"{nombre}Usted ya ha votado.")
+    if nombre in pd.votantes:
+        messagebox.showinfo("Ya registrado", f"{nombre} Usted ya ha votado.")
     else:
         pd.votantes.add(nombre)
-        messagebox.showinfo("Ya registrado", f"{nombre} Usted ya voto.")
+        messagebox.showinfo("Registrado", f"{nombre} Voto registrado.")
     entrada_votante.delete(0, tk.END)
 
+
 def ver_votantes():
-    votantes = pd
+    votantes = pd.votantes
     if votantes:
-        lista: "\n".join(pd.votantes)
-        messagebox.showinfo("Votantes", lista.)
+        lista = "\n".join(pd.votantes)
+        messagebox.showinfo("Votantes registrados", lista)
     else:
-        
         messagebox.showinfo("Sin votantes", "No hay votantes registrados.")
+
+def agregar_comida():
+    comida = entrada_comida.get().strip().lower()
+    precio = entrada_precios.get().strip()
+    if not comida or not precio:
+        messagebox.showwarning("Error", "Debe ingresar una comida y un precio.")
+        return
+    resultado = pd.agregar_comida(comida, precio)
+    if resultado is True:
+        messagebox.showinfo("Exito", f"{comida} ha sido agregada con un precio de {precio}.")
+    elif resultado is False:
+        messagebox.showwarning("Error", f"{comida} ya ha sido agregada.")
+    entrada_comida.delete(0, tk.END)
+    entrada_precios.delete(0, tk.END)
+
+def calcular_total():
+    if not pd.votantes or not pd.comida_y_montos:
+        messagebox.showwarning("Error", "Debe haber al menos un votante y una comida registrada.")
+        return
+    total = pd.calcular_total()
+    messagebox.showinfo("Total a pagar", f"Cada votante debe pagar: {total}")
+
+
+
 
 
 #------------------------Interfaz Gráfica con Tkinter------------------------
@@ -43,7 +67,7 @@ font=("Arial", 16), bg='purple', fg='white', relief=
 texto.pack(pady=10)
 
 
-button_registrar = tk.Button(frame1, text="Registrar votante", bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
+button_registrar = tk.Button(frame1, text="Registrar votante", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
 # button_registrar.config(bg='green', fg='white')
 button_registrar.pack(side=tk.LEFT, padx=20,pady=20)
 
@@ -57,7 +81,7 @@ frame1.pack()
 frame2 = tk.Frame(ventana)
 frame2.configure(bg='purple')
 
-button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
+button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
 button_ver_votantes.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame2.pack()
@@ -65,7 +89,7 @@ frame2.pack()
 frame3 = tk.Frame(ventana)
 frame3.configure(bg='purple')
 
-button_agregar = tk.Button(frame3, text="Agregar comida",bg="orange", fg="white",relief="raised", padx=10, pady=10,border=5)
+button_agregar = tk.Button(frame3, text="Agregar comida", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_comida)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
 entrada_comida = tk.Entry(frame3,justify=tk.RIGHT)
@@ -77,7 +101,8 @@ frame3.pack()
 frame5 = tk.Frame(ventana)
 frame5.configure(bg='purple')
 
-button_precios = tk.Button(frame5, text="Agregar precios",bg="orange", fg="white",relief="raised", padx=10, pady=10,border=5)
+button_precios = tk.Button(frame5, text="Agregar precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_comida)
+
 button_precios.pack(pady=20,padx=20,side=tk.LEFT)
 
 entrada_precios = tk.Entry(frame5,justify=tk.RIGHT)
@@ -88,7 +113,8 @@ frame5.pack()
 frame4 = tk.Frame(ventana)
 frame4.configure(bg='purple')
 
-button_calcular = tk.Button(frame4, text="Calcular total", bg="orange", fg="white",relief="raised", padx=10, pady=10,border=5)
+
+button_calcular = tk.Button(frame4, text="Calcular total", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=calcular_total)
 button_calcular.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame4.pack()
@@ -96,6 +122,10 @@ frame4.pack()
 
 button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
+
+#------------------------Conectar los botones con las funciones------------------------
+
+
 
 
 
