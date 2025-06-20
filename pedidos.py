@@ -1,7 +1,7 @@
 votantes = set ()
 comidas = set ()
-
 comida_y_montos =  {}
+
 print("Regístrese o escriba 'salir' para terminar: ")
 def registro ():
         while True:
@@ -47,3 +47,23 @@ if suma_votantes !=0:
         print(f"En total cada uno debe pagar es: {total_cada_uno}")
 else:
         print("Debe haber minimo una persona para hacer esta dividion de precios")
+
+        def agregar_comida(comida, precio):
+                if comida in comidas:
+                        return False
+                try:
+                        precio = float(precio)
+                        comidas.add(comida)
+                        comida_y_montos[comida] = precio
+                        return True
+                except ValueError:
+                        return None            
+
+
+
+def calcular_total():
+        
+        if len(votantes) ==0 :
+                return 0
+        total= sum(comida_y_montos.values())
+        return round(total / len(votantes),2 )
