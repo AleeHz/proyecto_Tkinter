@@ -1,7 +1,7 @@
 
 import tkinter as tk
 
-import pedidos as pd
+from pedidos import votantes, comida_y_montos, agregar_comida, calcular_total   
 
 #------------------------Funciones de la lógica del programa------------------------
 from tkinter import messagebox
@@ -10,18 +10,17 @@ def registrar_votante():
     if  nombre == "":
         messagebox.showwarning("Error", "Debe ingresar un nombre.")
         return
-    if nombre in pd.votantes:
+    if nombre in votantes:
         messagebox.showinfo("Ya registrado", f"{nombre} Usted ya ha votado.")
     else:
-        pd.votantes.add(nombre)
+        votantes.add(nombre)
         messagebox.showinfo("Registrado", f"{nombre} Voto registrado.")
     entrada_votante.delete(0, tk.END)
 
 
 def ver_votantes():
-    votantes = pd.votantes
     if votantes:
-        lista = "\n".join(pd.votantes)
+        lista = "\n".join(votantes)
         messagebox.showinfo("Votantes registrados", lista)
     else:
         messagebox.showinfo("Sin votantes", "No hay votantes registrados.")
@@ -32,7 +31,7 @@ def agregar_comida():
     if not comida or not precio:
         messagebox.showwarning("Error", "Debe ingresar una comida y un precio.")
         return
-    resultado = pd.agregar_comida(comida, precio)
+    resultado = agregar_comida(comida, precio)
     if resultado is True:
         messagebox.showinfo("Exito", f"{comida} ha sido agregada con un precio de {precio}.")
     elif resultado is False:
@@ -40,11 +39,18 @@ def agregar_comida():
     entrada_comida.delete(0, tk.END)
     entrada_precios.delete(0, tk.END)
 
+def mostrar_comidas():
+    if  comida_y_montos:
+        list = ""
+    for comida, precio in comida_y_montos.items():
+        list += f"{comida} su precio es {precio}\n"
+    messagebox.showinfo("Comidas registradas", list)
+
 def calcular_total():
-    if not pd.votantes or not pd.comida_y_montos:
+    if not votantes or not comida_y_montos:
         messagebox.showwarning("Error", "Debe haber al menos un votante y una comida registrada.")
         return
-    total = pd.calcular_total()
+    total = calcular_total()
     messagebox.showinfo("Total a pagar", f"Cada votante debe pagar: {total}")
 
 
@@ -56,7 +62,7 @@ def calcular_total():
 
 ventana = tk.Tk()
 ventana.title("Calculadora de comidas compartidas")
-ventana.geometry("700x570+300+100") #esos +400+200 son las coordenadas de la ventana en la pantalla
+ventana.geometry("800x1500") #esos +400+200 son las coordenadas de la ventana en la pantalla
 ventana.configure(bg='purple')
 
 frame1 = tk.Frame(ventana)
@@ -109,6 +115,14 @@ entrada_precios = tk.Entry(frame5,justify=tk.RIGHT)
 entrada_precios.pack(pady=20,padx=20,side=tk.RIGHT)
 
 frame5.pack()
+
+frame6 = tk.Frame(ventana)
+frame6.configure(bg='purple')
+
+button_mostrar = tk.Button(frame6, text="Mostrar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
+button_mostrar.pack(pady=20,padx=20,side=tk.LEFT)
+
+frame6.pack()
 
 frame4 = tk.Frame(ventana)
 frame4.configure(bg='purple')
