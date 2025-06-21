@@ -3,8 +3,11 @@ import tkinter as tk
 
 from pedidos import votantes, comida_y_montos, agregar_comida, calcular_total   
 
+
+
 #------------------------Funciones de la lógica del programa------------------------
 from tkinter import messagebox
+
 def registrar_votante():
     nombre = entrada_votante.get().strip().lower()
     if  nombre == "":
@@ -14,8 +17,9 @@ def registrar_votante():
         messagebox.showinfo("Ya registrado", f"{nombre} Usted ya ha votado.")
     else:
         votantes.add(nombre)
-        messagebox.showinfo("Registrado", f"{nombre} Voto registrado.")
+        lista_nombre.insert(tk.END,nombre)
     entrada_votante.delete(0, tk.END)
+
 
 
 def ver_votantes():
@@ -58,7 +62,6 @@ def monto_total():
 
 
 
-
 #------------------------Interfaz Gráfica con Tkinter------------------------
 
 
@@ -69,6 +72,9 @@ ventana.configure(bg='purple')
 
 frame1 = tk.Frame(ventana)
 frame1.configure(bg='purple')
+
+
+
 texto = tk.Label(ventana, text="Bienvenido a la calculadora de comidas compartidas",
 font=("Arial", 16), bg='purple', fg='white', relief=
 "raised", padx=10, pady=10)
@@ -89,8 +95,19 @@ frame1.pack()
 frame2 = tk.Frame(ventana)
 frame2.configure(bg='purple')
 
+frame_lista = tk.Frame(frame2)
+frame_lista.pack(side=tk.LEFT)
+
+scrollbar = tk.Scrollbar(frame_lista)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+lista_nombre = tk.Listbox(frame_lista,height=4, width=25, yscrollcommand= scrollbar.set)
+lista_nombre.pack(side=tk.LEFT)
+
+scrollbar.config(command=lista_nombre.yview)    
+
 button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
-button_ver_votantes.pack(pady=20,padx=20,side=tk.LEFT)
+button_ver_votantes.pack(padx=20,side=tk.RIGHT)
 
 frame2.pack()
 
@@ -138,13 +155,6 @@ frame4.pack()
 
 button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
-
-#------------------------Conectar los botones con las funciones------------------------
-
-
-
-
-
 
 
 
