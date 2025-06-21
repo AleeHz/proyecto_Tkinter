@@ -36,19 +36,19 @@ comida_y_montos =  {}
 # menu()
 # # print("Comida registrada:",comida_y_montos)
 
-for comida,precio in comida_y_montos.items():
-        print(f"{comida} su precio es {precio}")
-        continue 
-suma_votantes = len(votantes)
-suma_precio= sum(comida_y_montos.values())
+# for comida,precio in comida_y_montos.items():
+#         print(f"{comida} su precio es {precio}")
+#         continue 
+# suma_votantes = len(votantes)
+# suma_precio= sum(comida_y_montos.values())
 
-if suma_votantes !=0:
-        total_cada_uno= suma_precio / suma_votantes
-        # print(f"En total cada uno debe pagar es: {total_cada_uno}")
-else:
-        # print("Debe haber minimo una persona para hacer esta dividion de precios")
+# if suma_votantes !=0:
+#         total_cada_uno= suma_precio / suma_votantes
+#         # print(f"En total cada uno debe pagar es: {total_cada_uno}")
+# else:
+#         # print("Debe haber minimo una persona para hacer esta dividion de precios")
 
-        def agregar_comida(comida, precio):
+def agregar_comida(comida, precio):
                 if comida in comidas:
                         return False
                 try:
