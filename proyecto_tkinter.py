@@ -25,7 +25,7 @@ def ver_votantes():
     else:
         messagebox.showinfo("Sin votantes", "No hay votantes registrados.")
 
-def agregar_comida():
+def agregar_alimento():
     comida = entrada_comida.get().strip().lower()
     precio = entrada_precios.get().strip()
     if not comida or not precio:
@@ -42,11 +42,13 @@ def agregar_comida():
 def mostrar_comidas():
     if  comida_y_montos:
         list = ""
-    for comida, precio in comida_y_montos.items():
-        list += f"{comida} su precio es {precio}\n"
-    messagebox.showinfo("Comidas registradas", list)
+        for comida, precio in comida_y_montos.items():
+            list += f"{comida} su precio es {precio}\n"
+        messagebox.showinfo("Comidas registradas", list)
+    else:
+        messagebox.showinfo("Sin comidas", "No hay comidas registradas.")
 
-def calcular_total():
+def monto_total():
     if not votantes or not comida_y_montos:
         messagebox.showwarning("Error", "Debe haber al menos un votante y una comida registrada.")
         return
@@ -95,7 +97,7 @@ frame2.pack()
 frame3 = tk.Frame(ventana)
 frame3.configure(bg='purple')
 
-button_agregar = tk.Button(frame3, text="Agregar comida", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_comida)
+button_agregar = tk.Button(frame3, text="Agregar comida", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
 entrada_comida = tk.Entry(frame3,justify=tk.RIGHT)
@@ -107,7 +109,7 @@ frame3.pack()
 frame5 = tk.Frame(ventana)
 frame5.configure(bg='purple')
 
-button_precios = tk.Button(frame5, text="Agregar precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_comida)
+button_precios = tk.Button(frame5, text="Agregar precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 
 button_precios.pack(pady=20,padx=20,side=tk.LEFT)
 
@@ -119,8 +121,8 @@ frame5.pack()
 frame6 = tk.Frame(ventana)
 frame6.configure(bg='purple')
 
-button_mostrar = tk.Button(frame6, text="Mostrar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
-button_mostrar.pack(pady=20,padx=20,side=tk.LEFT)
+button_mostrar_comidas = tk.Button(frame6, text="Mostrar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
+button_mostrar_comidas.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame6.pack()
 
@@ -128,7 +130,7 @@ frame4 = tk.Frame(ventana)
 frame4.configure(bg='purple')
 
 
-button_calcular = tk.Button(frame4, text="Calcular total", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=calcular_total)
+button_calcular = tk.Button(frame4, text="Calcular total", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=monto_total)
 button_calcular.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame4.pack()
