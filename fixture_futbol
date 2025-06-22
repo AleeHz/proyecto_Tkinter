@@ -1,0 +1,136 @@
+
+import tkinter as tk
+from tkinter import messagebox, ttk, simpledialog
+import random
+import os
+
+# Equipos de ejemplo
+equipos = [f"Equipo {i+1}" for i in range(10)]
+random.shuffle(equipos)
+
+grupo_a = equipos[:5]
+grupo_b = equipos[5:]
+
+fase_actual = "grupo"  # grupo, cuartos, semis, final
+imagenes_fases = {
+    "grupo": "futbol_images/grupo.png",
+    "cuartos": "futbol_images/cuartos.png",
+    "semis": "futbol_images/semis.png",
+    "final": "futbol_images/final.png",
+}
+
+class TorneoApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Torneo Deportivo - Fixture")
+        self.root.geometry("1000x700")
+        self.root.config(bg="white")
+
+        self.fase = "grupo"
+        self.partidos = []
+        self.resultados = {}
+
+        self.imagen_label = tk.Label(self.root, bg="white", text="[Imagen fase no disponible]", font=("Arial", 14))
+        self.imagen_label.pack(pady=10)
+
+        self.actualizar_imagen_fase()
+
+        self.botones_frame = tk.Frame(self.root, bg="white")
+        self.botones_frame.pack(pady=10)
+
+        tk.Button(self.botones_frame, text="Generar Fixture Grupos", command=self.generar_fixture_grupos, bg="#4CAF50", fg="white").grid(row=0, column=0, padx=5)
+        tk.Button(self.botones_frame, text="Cuartos de Final", command=self.fase_cuartos, bg="#2196F3", fg="white").grid(row=0, column=1, padx=5)
+        tk.Button(self.botones_frame, text="Semifinal", command=self.fase_semis, bg="#FFA500", fg="white").grid(row=0, column=2, padx=5)
+        tk.Button(self.botones_frame, text="Final", command=self.fase_final, bg="#F44336", fg="white").grid(row=0, column=3, padx=5)
+
+        self.tree = ttk.Treeview(self.root, columns=("Equipo A", "Equipo B", "Goles A", "Goles B", "Ganador"), show="headings")
+        for col in self.tree["columns"]:
+            self.tree.heading(col, text=col)
+        self.tree.pack(pady=10, fill=tk.X)
+
+        tk.Button(self.root, text="Cargar Resultado", command=self.cargar_resultado, bg="#FFC107").pack(pady=10)
+
+    def actualizar_imagen_fase(self):
+        path = imagenes_fases.get(self.fase, "")
+        if not os.path.exists(path):
+            self.imagen_label.config(text=f"Fase actual: {self.fase.upper()} (sin imagen)")
+
+    def generar_fixture_grupos(self):
+        self.fase = "grupo"
+        self.actualizar_imagen_fase()
+        self.tree.delete(*self.tree.get_children())
+        self.partidos.clear()
+        for grupo in [grupo_a, grupo_b]:
+            for i in range(len(grupo)):
+                for j in range(i+1, len(grupo)):
+                    a, b = grupo[i], grupo[j]
+                    self.partidos.append([a, b])
+                    self.tree.insert("", "end", values=(a, b, "", "", ""))
+
+    def cargar_resultado(self):
+        seleccion = self.tree.selection()
+        if not seleccion:
+            messagebox.showwarning("Selecciona", "Selecciona un partido")
+            return
+        partido = self.tree.item(seleccion[0])["values"]
+        equipo_a, equipo_b = partido[0], partido[1]
+        try:
+            goles_a = int(simpledialog.askstring("Goles", f"Goles de {equipo_a}:"))
+            goles_b = int(simpledialog.askstring("Goles", f"Goles de {equipo_b}:"))
+        except:
+            messagebox.showerror("Error", "Número inválido")
+            return
+
+        ganador = equipo_a if goles_a > goles_b else equipo_b if goles_b > goles_a else "Empate"
+        self.tree.item(seleccion[0], values=(equipo_a, equipo_b, goles_a, goles_b, ganador))
+        self.resultados[(equipo_a, equipo_b)] = (goles_a, goles_b)
+
+    def fase_cuartos(self):
+        self.fase = "cuartos"
+        self.actualizar_imagen_fase()
+        self.tree.delete(*self.tree.get_children())
+        self.partidos.clear()
+
+        clasificados = random.sample(equipos, 8)  # simulamos clasificados
+        self.cuartos = []
+        for i in range(0, 8, 2):
+            a, b = clasificados[i], clasificados[i+1]
+            self.cuartos.append([a, b])
+            self.tree.insert("", "end", values=(a, b, "", "", ""))
+
+    def fase_semis(self):
+        self.fase = "semis"
+        self.actualizar_imagen_fase()
+        self.tree.delete(*self.tree.get_children())
+        self.partidos.clear()
+
+        ganadores_cuartos = self.obtener_ganadores_actuales()
+        self.semis = []
+        for i in range(0, len(ganadores_cuartos), 2):
+            a, b = ganadores_cuartos[i], ganadores_cuartos[i+1]
+            self.semis.append([a, b])
+            self.tree.insert("", "end", values=(a, b, "", "", ""))
+
+    def fase_final(self):
+        self.fase = "final"
+        self.actualizar_imagen_fase()
+        self.tree.delete(*self.tree.get_children())
+        self.partidos.clear()
+
+        ganadores_semis = self.obtener_ganadores_actuales()
+        if len(ganadores_semis) >= 2:
+            a, b = ganadores_semis[0], ganadores_semis[1]
+            self.tree.insert("", "end", values=(a, b, "", "", ""))
+
+    def obtener_ganadores_actuales(self):
+        ganadores = []
+        for item in self.tree.get_children():
+            valores = self.tree.item(item)["values"]
+            if valores and valores[4] != "Empate" and valores[4] != "":
+                ganadores.append(valores[4])
+        return ganadores
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TorneoApp(root)
+    root.mainloop()
