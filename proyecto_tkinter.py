@@ -37,7 +37,7 @@ def agregar_alimento():
         return
     resultado = agregar_comida(comida, precio)
     if resultado is True:
-        messagebox.showinfo("Exito", f"{comida} ha sido agregada con un precio de {precio}.")
+        lista_comida_y_precio.insert(tk.END, f"{comida} : {precio}")
     elif resultado is False:
         messagebox.showwarning("Error", f"{comida} ya ha sido agregada.")
     entrada_comida.delete(0, tk.END)
@@ -56,10 +56,29 @@ def monto_total():
     if not votantes or not comida_y_montos:
         messagebox.showwarning("Error", "Debe haber al menos un votante y una comida registrada.")
         return
-    total = calcular_total()
-    messagebox.showinfo("Total a pagar", f"Cada votante debe pagar: {total}")
+    try:
+        total = calcular_total()
+        messagebox.showinfo("Total a pagar", f"Cada votante debe pagar: {total}")
+    except Exception as e:
+        messagebox.showerror("Error", f"Ha ocurrido un error al calcular el total: {str(e)}")
 
 
+def habilitar_agrear_comida():
+    entrada_comida.config(state=tk.NORMAL)
+    button_agregar.config(state=tk.NORMAL)
+    lista_comida_y_precio.config(state=tk.NORMAL)
+    entrada_votante.config(state=tk.DISABLED)
+    button_registrar.config(state=tk.DISABLED)
+    lista_nombre.config(state=tk.DISABLED)
+    button_terminar_votacion.config(state=tk.DISABLED)
+    button_terminar_comidas.pack(padxy=20)
+
+
+def habilitar_agregar_precios():
+    entrada_precios.config(state=tk.NORMAL)
+    button_precios.config(state=tk.NORMAL)
+    button_calcular.config(state=tk.NORMAL)
+    button_terminar_comidas.config(state=tk.DISABLED)
 
 
 #------------------------Interfaz Gráfica con Tkinter------------------------
@@ -109,6 +128,10 @@ scrollbar.config(command=lista_nombre.yview)
 button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
 button_ver_votantes.pack(padx=20,side=tk.RIGHT)
 
+button_terminar_votacion = tk.Button(frame2, text="Terminar votación", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agrear_comida)
+button_terminar_votacion.pack(padx=20,side=tk.RIGHT)
+
+
 frame2.pack()
 
 frame3 = tk.Frame(ventana)
@@ -117,8 +140,27 @@ frame3.configure(bg='purple')
 button_agregar = tk.Button(frame3, text="Agregar comida", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
+
 entrada_comida = tk.Entry(frame3,justify=tk.RIGHT)
 entrada_comida.pack(pady=20,padx=20,side=tk.RIGHT)
+
+
+frame_lista_comida = tk.Frame(frame3)
+frame_lista_comida.pack(side=tk.LEFT)
+
+scrollbar_comidas = tk.Scrollbar(frame_lista_comida)
+scrollbar_comidas.pack(side=tk.RIGHT, fill=tk.Y)
+
+lista_comida_y_precio = tk.Listbox(
+    frame_lista_comida,
+    height=4,
+    width=25,
+    yscrollcommand=scrollbar_comidas.set
+)
+lista_comida_y_precio.pack(side=tk.LEFT)
+
+scrollbar_comidas.config(command=lista_comida_y_precio.yview)
+
 
 
 frame3.pack()
@@ -141,6 +183,10 @@ frame6.configure(bg='purple')
 button_mostrar_comidas = tk.Button(frame6, text="Mostrar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
 button_mostrar_comidas.pack(pady=20,padx=20,side=tk.LEFT)
 
+button_terminar_comidas = tk.Button(frame6, text="Terminar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_precios)
+button_terminar_comidas.pack_forget()  
+button_terminar_comidas.pack(pady=20) 
+
 frame6.pack()
 
 frame4 = tk.Frame(ventana)
@@ -156,6 +202,14 @@ frame4.pack()
 button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
 
+
+
+entrada_comida.config(state="disabled")
+entrada_precios.config(state="disabled")
+button_agregar.config(state="disabled")
+button_precios.config(state="disabled")
+lista_comida_y_precio.config(state="disabled")
+button_calcular.config(state="disabled")
 
 
 ventana.mainloop()
