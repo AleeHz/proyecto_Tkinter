@@ -52,9 +52,7 @@ def agregar_comida(comida, precio):
                 if comida in comidas:
                         return False
                 try:
-                        precio = float(precio)
-                        comidas.add(comida)
-                        comida_y_montos[comida] = precio
+                        comida_y_montos[comida] = float(precio)
                         return True
                 except ValueError:
                         return None            
