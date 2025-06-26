@@ -71,7 +71,6 @@ def habilitar_agregar_comida():
     button_mostrar_comidas.pack(pady=20, padx=20, side=tk.LEFT)
     button_terminar_comidas.pack(pady=20)
 
-
     entrada_votante.config(state=tk.DISABLED)
     button_registrar.config(state=tk.DISABLED)
     lista_nombre.config(state=tk.DISABLED)
@@ -102,24 +101,24 @@ def validar_float(texto):
 ventana = tk.Tk()
 ventana.title("Calculadora de comidas compartidas")
 ventana.geometry("800x1500") #esos +400+200 son las coordenadas de la ventana en la pantalla
-ventana.configure(bg='purple')
+ventana.configure(bg='DeepSkyBlue3')
 
 validar_str = ventana.register(validar_string)
 validar_flt = ventana.register(validar_float)
 
 frame1 = tk.Frame(ventana)
-frame1.configure(bg='purple')
+frame1.configure(bg='DeepSkyBlue3')
 
 
 
 texto = tk.Label(ventana, text="Bienvenido a la calculadora de comidas compartidas",
-font=("Arial", 16), bg='purple', fg='white', relief=
+font=("Arial", 16), bg='DeepSkyBlue3', fg='white', relief=
 "raised", padx=10, pady=10)
 texto.pack(pady=10)
 
 
-button_registrar = tk.Button(frame1, text="Registrar votante", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
-# button_registrar.config(bg='green', fg='white')
+button_registrar = tk.Button(frame1, text="Registrar votante", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
+
 button_registrar.pack(side=tk.LEFT, padx=20,pady=20)
 
 
@@ -130,7 +129,7 @@ entrada_votante.get()
 frame1.pack()
 
 frame2 = tk.Frame(ventana)
-frame2.configure(bg='purple')
+frame2.configure(bg='DeepSkyBlue3')
 
 frame_lista = tk.Frame(frame2)
 frame_lista.pack(side=tk.LEFT)
@@ -143,19 +142,19 @@ lista_nombre.pack(side=tk.LEFT)
 
 scrollbar.config(command=lista_nombre.yview)    
 
-button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
+button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
 button_ver_votantes.pack(padx=20,side=tk.RIGHT)
 
-button_terminar_votacion = tk.Button(frame2, text="Terminar votación", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_comida)
+button_terminar_votacion = tk.Button(frame2, text="Terminar votación", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_comida)
 button_terminar_votacion.pack(padx=20,side=tk.RIGHT)
 
 
 frame2.pack()
 
 frame3 = tk.Frame(ventana)
-frame3.configure(bg='purple')
+frame3.configure(bg='DeepSkyBlue3')
 
-button_agregar = tk.Button(frame3, text="Agregar comida y precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
+button_agregar = tk.Button(frame3, text="Agregar comida y precios", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
 
@@ -164,13 +163,10 @@ entrada_comida.pack(pady=20,padx=20,side=tk.RIGHT)
 
 
 
-
-
-
 frame3.pack()
 
 frame5 = tk.Frame(ventana)
-frame5.configure(bg='purple')
+frame5.configure(bg='DeepSkyBlue3')
 
 frame_lista_comida = tk.Frame(frame5)
 frame_lista_comida.pack(side=tk.LEFT)
@@ -194,28 +190,28 @@ entrada_precios.pack(pady=20,padx=20,side=tk.RIGHT)
 frame5.pack()
 
 frame6 = tk.Frame(ventana)
-frame6.configure(bg='purple')
+frame6.configure(bg='DeepSkyBlue3')
 
-button_mostrar_comidas = tk.Button(frame6, text="Mostrar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
+button_mostrar_comidas = tk.Button(frame6, text="Mostrar comidas", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
 button_mostrar_comidas.pack(pady=20,padx=20,side=tk.LEFT)
 
-button_terminar_comidas = tk.Button(frame6, text="Terminar comidas", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_precios)
+button_terminar_comidas = tk.Button(frame6, text="Terminar comidas", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_precios)
 button_terminar_comidas.pack_forget()  
 button_terminar_comidas.pack(pady=20) 
 
 frame6.pack()
 
 frame4 = tk.Frame(ventana)
-frame4.configure(bg='purple')
+frame4.configure(bg='DeepSkyBlue3')
 
 
-button_calcular = tk.Button(frame4, text="Calcular total", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=monto_total)
+button_calcular = tk.Button(frame4, text="Calcular total", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=monto_total)
 button_calcular.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame4.pack()
 
 
-button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="orange", fg="white", relief="raised", padx=10, pady=10,border=5)
+button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
 
 
@@ -231,4 +227,3 @@ button_salir.pack_forget()
 
 
 ventana.mainloop()
-
