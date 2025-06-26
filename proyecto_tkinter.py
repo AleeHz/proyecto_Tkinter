@@ -47,7 +47,7 @@ def mostrar_comidas():
     if  comida_y_montos:
         list = ""
         for comida, precio in comida_y_montos.items():
-            list += f"{comida} su precio es {precio}\n"
+            list += f"{comida} su precio es: {precio}\n"
         messagebox.showinfo("Comidas registradas", list)
     else:
         messagebox.showinfo("Sin comidas", "No hay comidas registradas.")
@@ -63,22 +63,37 @@ def monto_total():
         messagebox.showerror("Error", f"Ha ocurrido un error al calcular el total: {str(e)}")
 
 
-def habilitar_agrear_comida():
-    entrada_comida.config(state=tk.NORMAL)
-    button_agregar.config(state=tk.NORMAL)
-    lista_comida_y_precio.config(state=tk.NORMAL)
+def habilitar_agregar_comida():
+    entrada_comida.pack(pady=20, padx=20, side=tk.RIGHT)
+    entrada_precios.pack(pady=20, padx=20, side=tk.RIGHT)
+    button_agregar.pack(pady=20, padx=20, side=tk.LEFT)
+    frame_lista_comida.pack(side=tk.LEFT)
+    button_mostrar_comidas.pack(pady=20, padx=20, side=tk.LEFT)
+    button_terminar_comidas.pack(pady=20)
+
+
     entrada_votante.config(state=tk.DISABLED)
     button_registrar.config(state=tk.DISABLED)
     lista_nombre.config(state=tk.DISABLED)
-    button_terminar_votacion.config(state=tk.DISABLED)
-    button_terminar_comidas.pack(padxy=20)
+    button_terminar_votacion.pack_forget()
 
 
 def habilitar_agregar_precios():
-    entrada_precios.config(state=tk.NORMAL)
-    button_precios.config(state=tk.NORMAL)
-    button_calcular.config(state=tk.NORMAL)
-    button_terminar_comidas.config(state=tk.DISABLED)
+    button_calcular.pack(pady=20, padx=20, side=tk.LEFT)
+    button_salir.pack(pady=20)
+    button_terminar_comidas.pack_forget()
+
+def validar_string(s):
+        return all(c.isalpha() or c.isspace() for c in s)
+    
+def validar_float(texto):
+        try:
+            if texto == "":
+                return True
+            float(texto)
+            return True
+        except ValueError:
+            return False
 
 
 #------------------------Interfaz Gráfica con Tkinter------------------------
@@ -88,6 +103,9 @@ ventana = tk.Tk()
 ventana.title("Calculadora de comidas compartidas")
 ventana.geometry("800x1500") #esos +400+200 son las coordenadas de la ventana en la pantalla
 ventana.configure(bg='purple')
+
+validar_str = ventana.register(validar_string)
+validar_flt = ventana.register(validar_float)
 
 frame1 = tk.Frame(ventana)
 frame1.configure(bg='purple')
@@ -105,7 +123,7 @@ button_registrar = tk.Button(frame1, text="Registrar votante", bg="orange", fg="
 button_registrar.pack(side=tk.LEFT, padx=20,pady=20)
 
 
-entrada_votante = tk.Entry(frame1,justify=tk.RIGHT)
+entrada_votante = tk.Entry(frame1,justify=tk.RIGHT, validate="key", validatecommand=(validar_str, '%P'))
 entrada_votante.pack(side=tk.RIGHT, padx=20,pady=20)  
 entrada_votante.get()  
 
@@ -128,7 +146,7 @@ scrollbar.config(command=lista_nombre.yview)
 button_ver_votantes = tk.Button(frame2, text="Ver votantes", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=ver_votantes)
 button_ver_votantes.pack(padx=20,side=tk.RIGHT)
 
-button_terminar_votacion = tk.Button(frame2, text="Terminar votación", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agrear_comida)
+button_terminar_votacion = tk.Button(frame2, text="Terminar votación", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=habilitar_agregar_comida)
 button_terminar_votacion.pack(padx=20,side=tk.RIGHT)
 
 
@@ -137,15 +155,24 @@ frame2.pack()
 frame3 = tk.Frame(ventana)
 frame3.configure(bg='purple')
 
-button_agregar = tk.Button(frame3, text="Agregar comida", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
+button_agregar = tk.Button(frame3, text="Agregar comida y precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
 
-entrada_comida = tk.Entry(frame3,justify=tk.RIGHT)
+entrada_comida = tk.Entry(frame3,justify=tk.RIGHT, validate="key", validatecommand=(validar_str, '%P'))
 entrada_comida.pack(pady=20,padx=20,side=tk.RIGHT)
 
 
-frame_lista_comida = tk.Frame(frame3)
+
+
+
+
+frame3.pack()
+
+frame5 = tk.Frame(ventana)
+frame5.configure(bg='purple')
+
+frame_lista_comida = tk.Frame(frame5)
 frame_lista_comida.pack(side=tk.LEFT)
 
 scrollbar_comidas = tk.Scrollbar(frame_lista_comida)
@@ -161,18 +188,7 @@ lista_comida_y_precio.pack(side=tk.LEFT)
 
 scrollbar_comidas.config(command=lista_comida_y_precio.yview)
 
-
-
-frame3.pack()
-
-frame5 = tk.Frame(ventana)
-frame5.configure(bg='purple')
-
-button_precios = tk.Button(frame5, text="Agregar precios", bg="orange", fg="white", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
-
-button_precios.pack(pady=20,padx=20,side=tk.LEFT)
-
-entrada_precios = tk.Entry(frame5,justify=tk.RIGHT)
+entrada_precios = tk.Entry(frame5,justify=tk.RIGHT, validate="key", validatecommand=(validar_flt, '%P'))
 entrada_precios.pack(pady=20,padx=20,side=tk.RIGHT)
 
 frame5.pack()
@@ -204,12 +220,14 @@ button_salir.pack()
 
 
 
-entrada_comida.config(state="disabled")
-entrada_precios.config(state="disabled")
-button_agregar.config(state="disabled")
-button_precios.config(state="disabled")
-lista_comida_y_precio.config(state="disabled")
-button_calcular.config(state="disabled")
+entrada_comida.pack_forget()
+entrada_precios.pack_forget()
+button_agregar.pack_forget()
+frame_lista_comida.pack_forget()
+button_mostrar_comidas.pack_forget()
+button_terminar_comidas.pack_forget()
+button_calcular.pack_forget()
+button_salir.pack_forget()
 
 
 ventana.mainloop()
