@@ -64,8 +64,8 @@ def monto_total():
 
 
 def habilitar_agregar_comida():
-    entrada_comida.pack(pady=20, padx=20, side=tk.RIGHT)
-    entrada_precios.pack(pady=20, padx=20, side=tk.RIGHT)
+    subframe_comida.pack(pady=20, padx=20, side=tk.LEFT)
+    subframe_precios.pack(pady=20, padx=20, side=tk.LEFT)
     button_agregar.pack(pady=20, padx=20, side=tk.LEFT)
     frame_lista_comida.pack(side=tk.LEFT)
     button_mostrar_comidas.pack(pady=20, padx=20, side=tk.LEFT)
@@ -119,12 +119,16 @@ texto.pack(pady=10)
 
 button_registrar = tk.Button(frame1, text="Registrar votante", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
 
-button_registrar.pack(side=tk.LEFT, padx=20,pady=20)
+button_registrar.pack(side=tk.RIGHT, padx=20,pady=20)
 
+subframe_votantes = tk.Frame(frame1, bg='DeepSkyBlue3')
 
-entrada_votante = tk.Entry(frame1,justify=tk.RIGHT, validate="key", validatecommand=(validar_str, '%P'))
-entrada_votante.pack(side=tk.RIGHT, padx=20,pady=20)  
-entrada_votante.get()  
+label_votante = tk.Label(subframe_votantes, text="Ingrese su nombre:", bg='DeepSkyBlue3', fg='black', font=("Arial", 12))
+entrada_votante = tk.Entry(subframe_votantes,justify=tk.LEFT, validate="key", validatecommand=(validar_str, '%P'))
+
+label_votante.grid(row=0, column=0, padx=10, pady=10)
+entrada_votante.grid(row=0, column=1, padx=10, pady=10)
+subframe_votantes.pack(side=tk.LEFT)
 
 frame1.pack()
 
@@ -132,13 +136,13 @@ frame2 = tk.Frame(ventana)
 frame2.configure(bg='DeepSkyBlue3')
 
 frame_lista = tk.Frame(frame2)
-frame_lista.pack(side=tk.LEFT)
+frame_lista.pack(side=tk.RIGHT)
 
 scrollbar = tk.Scrollbar(frame_lista)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
 lista_nombre = tk.Listbox(frame_lista,height=4, width=25, yscrollcommand= scrollbar.set)
-lista_nombre.pack(side=tk.LEFT)
+lista_nombre.pack(side=tk.RIGHT)
 
 scrollbar.config(command=lista_nombre.yview)    
 
@@ -154,13 +158,28 @@ frame2.pack()
 frame3 = tk.Frame(ventana)
 frame3.configure(bg='DeepSkyBlue3')
 
+subframe_comida = tk.Frame(frame3, bg='DeepSkyBlue3')
+lablel_comida = tk.Label(subframe_comida, text="Ingrese comida:", bg='DeepSkyBlue3', fg='black', font=("Arial", 12))
+entrada_comida = tk.Entry(subframe_comida,justify=tk.LEFT, validate="key", validatecommand=(validar_str, '%P'))
+
+lablel_comida.grid(row=0, column=0, padx=10, pady=10)
+entrada_comida.grid(row=0, column=1, padx=10, pady=10)
+subframe_comida.pack(side=tk.LEFT)
+
+
+subframe_precios = tk.Frame(frame3, bg='DeepSkyBlue3')
+label_precios = tk.Label(subframe_precios, text="Ingrese precios:", bg='DeepSkyBlue3', fg='black', font=("Arial", 12))
+entrada_precios = tk.Entry(subframe_precios,justify=tk.LEFT, validate="key", validatecommand=(validar_flt, '%P'))
+
+label_precios.grid(row=0, column=0, padx=0, pady=3)
+entrada_precios.grid(row=0, column=1, padx=3, pady=3)
+subframe_precios.pack(side=tk.LEFT)
+
+
+
+
 button_agregar = tk.Button(frame3, text="Agregar comida y precios", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=agregar_alimento)
 button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
-
-
-entrada_comida = tk.Entry(frame3,justify=tk.RIGHT, validate="key", validatecommand=(validar_str, '%P'))
-entrada_comida.pack(pady=20,padx=20,side=tk.RIGHT)
-
 
 
 frame3.pack()
@@ -180,12 +199,11 @@ lista_comida_y_precio = tk.Listbox(
     width=25,
     yscrollcommand=scrollbar_comidas.set
 )
-lista_comida_y_precio.pack(side=tk.LEFT)
+lista_comida_y_precio.pack(side=tk.RIGHT)
 
 scrollbar_comidas.config(command=lista_comida_y_precio.yview)
 
-entrada_precios = tk.Entry(frame5,justify=tk.RIGHT, validate="key", validatecommand=(validar_flt, '%P'))
-entrada_precios.pack(pady=20,padx=20,side=tk.RIGHT)
+
 
 frame5.pack()
 
@@ -216,14 +234,18 @@ button_salir.pack()
 
 
 
-entrada_comida.pack_forget()
-entrada_precios.pack_forget()
+subframe_comida.pack_forget()
+subframe_precios.pack_forget()
 button_agregar.pack_forget()
 frame_lista_comida.pack_forget()
 button_mostrar_comidas.pack_forget()
 button_terminar_comidas.pack_forget()
 button_calcular.pack_forget()
 button_salir.pack_forget()
+
+entrada_votante.bind("<Return>", lambda event: registrar_votante())
+entrada_comida.bind("<Return>", lambda event: agregar_alimento())
+entrada_precios.bind("<Return>", lambda event: agregar_alimento())
 
 
 ventana.mainloop()
