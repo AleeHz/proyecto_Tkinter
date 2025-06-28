@@ -4,9 +4,8 @@ import tkinter as tk
 from pedidos import votantes, comida_y_montos, agregar_comida, calcular_total   
 
 
-
 #------------------------Funciones de la lógica del programa------------------------
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 def registrar_votante():
     nombre = entrada_votante.get().strip().lower()
@@ -96,43 +95,66 @@ def validar_float(texto):
 
 
 #------------------------Interfaz Gráfica con Tkinter------------------------
-
+#------------------------Menu principal------------------------
 
 ventana = tk.Tk()
-ventana.title("Calculadora de comidas compartidas")
+ventana.title("Proyecto tkinter")
 ventana.geometry("800x1500") #esos +400+200 son las coordenadas de la ventana en la pantalla
 ventana.configure(bg='DeepSkyBlue3')
 
 validar_str = ventana.register(validar_string)
 validar_flt = ventana.register(validar_float)
 
-frame1 = tk.Frame(ventana)
+pestania= ttk.Notebook(ventana)
+pestania.pack(fill=tk.BOTH, expand=True)
+
+frame_menu= tk.Frame(pestania, bg='DeepSkyBlue3')
+pestania.add(frame_menu, text="Menu Principal")
+
+label_menu = tk.Label(frame_menu, text="Bienvenido al menú principal", font=("Arial", 16), bg='DeepSkyBlue3', fg='White', relief="raised", padx=10, pady=10)
+label_menu.pack(pady=10)
+
+label_grupo = tk.Label(frame_menu, text="Grupo: 8", font=("Arial", 12), bg='DeepSkyBlue3', fg='white',  padx=10, pady=10)
+label_grupo.pack(pady=10)
+
+label_mienbros = tk.Label(frame_menu, text="Integrantes: \nAlejandro Jose Hernandez, \nGalarza Gomez Blanchet Nicolás Osvaldo", font=("Arial", 12), bg='DeepSkyBlue3', fg='white', padx=10, pady=10)
+label_mienbros.pack(pady=10)
+
+frame_calc = tk.Frame(pestania, bg='DeepSkyBlue3')
+pestania.add(frame_calc, text="Calculadora de gastos compartidos")
+
+button_ir_calc = tk.Button(frame_menu, text="Ir a la calculadora de gastos compartidos", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=lambda: pestania.select(frame_calc))
+button_ir_calc.pack(pady=20)
+
+#------------------------Calculadora de gastos compartidos------------------------
+
+frame1 = tk.Frame(frame_calc)
 frame1.configure(bg='DeepSkyBlue3')
 
 
-
-texto = tk.Label(ventana, text="Bienvenido a la calculadora de comidas compartidas",
+texto = tk.Label(frame1, text="Bienvenido a la calculadora de comidas compartidas",
 font=("Arial", 16), bg='DeepSkyBlue3', fg='white', relief=
 "raised", padx=10, pady=10)
 texto.pack(pady=10)
 
-
-button_registrar = tk.Button(frame1, text="Registrar votante", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
-
-button_registrar.pack(side=tk.RIGHT, padx=20,pady=20)
-
 subframe_votantes = tk.Frame(frame1, bg='DeepSkyBlue3')
+
 
 label_votante = tk.Label(subframe_votantes, text="Ingrese su nombre:", bg='DeepSkyBlue3', fg='black', font=("Arial", 12))
 entrada_votante = tk.Entry(subframe_votantes,justify=tk.LEFT, validate="key", validatecommand=(validar_str, '%P'))
 
+button_registrar = tk.Button(subframe_votantes, text="Registrar votante", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=registrar_votante)
+
+
 label_votante.grid(row=0, column=0, padx=10, pady=10)
 entrada_votante.grid(row=0, column=1, padx=10, pady=10)
-subframe_votantes.pack(side=tk.LEFT)
+button_registrar.grid(row=0, column=2, padx=10, pady=10)
+
+subframe_votantes.pack()
 
 frame1.pack()
 
-frame2 = tk.Frame(ventana)
+frame2 = tk.Frame(frame_calc)
 frame2.configure(bg='DeepSkyBlue3')
 
 frame_lista = tk.Frame(frame2)
@@ -155,15 +177,15 @@ button_terminar_votacion.pack(padx=20,side=tk.RIGHT)
 
 frame2.pack()
 
-frame3 = tk.Frame(ventana)
+frame3 = tk.Frame(frame_calc)
 frame3.configure(bg='DeepSkyBlue3')
 
 subframe_comida = tk.Frame(frame3, bg='DeepSkyBlue3')
 lablel_comida = tk.Label(subframe_comida, text="Ingrese comida:", bg='DeepSkyBlue3', fg='black', font=("Arial", 12))
 entrada_comida = tk.Entry(subframe_comida,justify=tk.LEFT, validate="key", validatecommand=(validar_str, '%P'))
 
-lablel_comida.grid(row=0, column=0, padx=10, pady=10)
-entrada_comida.grid(row=0, column=1, padx=10, pady=10)
+lablel_comida.grid(row=0, column=0, padx=3, pady=10)
+entrada_comida.grid(row=0, column=1, padx=3, pady=10)
 subframe_comida.pack(side=tk.LEFT)
 
 
@@ -184,7 +206,7 @@ button_agregar.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame3.pack()
 
-frame5 = tk.Frame(ventana)
+frame5 = tk.Frame(frame_calc)
 frame5.configure(bg='DeepSkyBlue3')
 
 frame_lista_comida = tk.Frame(frame5)
@@ -207,7 +229,7 @@ scrollbar_comidas.config(command=lista_comida_y_precio.yview)
 
 frame5.pack()
 
-frame6 = tk.Frame(ventana)
+frame6 = tk.Frame(frame_calc)
 frame6.configure(bg='DeepSkyBlue3')
 
 button_mostrar_comidas = tk.Button(frame6, text="Mostrar comidas", bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10, border=5, command=mostrar_comidas)
@@ -219,7 +241,7 @@ button_terminar_comidas.pack(pady=20)
 
 frame6.pack()
 
-frame4 = tk.Frame(ventana)
+frame4 = tk.Frame(frame_calc)
 frame4.configure(bg='DeepSkyBlue3')
 
 
@@ -228,9 +250,12 @@ button_calcular.pack(pady=20,padx=20,side=tk.LEFT)
 
 frame4.pack()
 
+frame7= tk.Frame(frame_calc)
+frame7.configure(bg='DeepSkyBlue3')
 
-button_salir = tk.Button(ventana, text="Salir", command=ventana.destroy, bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10,border=5)
+button_salir = tk.Button(frame7, text="Salir", command=ventana.destroy, bg="SeaGreen2", fg="black", relief="raised", padx=10, pady=10,border=5)
 button_salir.pack()
+frame7.pack()
 
 
 
